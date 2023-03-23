@@ -9,7 +9,7 @@ import shutil
 
 input_bucket = "cse546-input"
 output_bucket = "cse546-output"
-dynamodb_table = 'cse546-ddb'
+dynamodb_table = "cse546-ddb"
 frames_path = '/tmp/'
 
 AWS_ACCESS_KEY_ID = 'AKIAQL6AAJ62SU3E4WMV'
@@ -21,7 +21,7 @@ s3_client = boto3.client('s3',
                          aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
 dynamodb_client = boto3.client('dynamodb',
                          aws_access_key_id=AWS_ACCESS_KEY_ID,
-                         aws_secret_access_key= AWS_SECRET_ACCESS_KEY,region_name='us-west-2')
+                         aws_secret_access_key= AWS_SECRET_ACCESS_KEY,region_name='us-east-1')
 				
 # Function to read the 'encoding' file
 def open_encoding(filename):
