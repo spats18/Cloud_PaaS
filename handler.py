@@ -30,11 +30,11 @@ def open_encoding(filename):
 	return data
 
 def download_video_s3(video_name):
-	print("in download video")
+	print("Downloading video")
 	s3_client.download_file(Bucket=input_bucket, Key=video_name, Filename='/tmp/'+video_name)
-	print("after downloading file")
+	print("Extracting frames from video")
 	os.system("ffmpeg -i " + str('/tmp/'+video_name) + " -r 1 " + str(frames_path) + "image-%3d.jpeg")
-	print("after frames")
+	print("Frames extracted")
 
 
 def get_item(name,video_name):
