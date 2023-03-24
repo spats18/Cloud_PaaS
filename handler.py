@@ -14,7 +14,6 @@ frames_path = '/tmp/'
 
 AWS_ACCESS_KEY_ID = 'AKIAQL6AAJ62SU3E4WMV'
 AWS_SECRET_ACCESS_KEY = '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'
-# event={'Records': [{'eventVersion': '2.1', 'eventSource': 'aws:s3', 'awsRegion': 'us-west-2', 'eventTime': '2022-10-28T08:11:20.197Z', 'eventName': 'ObjectCreated:Put', 'userIdentity': {'principalId': 'AWS:AIDASJUR6HKG2QTMFIMDF'}, 'requestParameters': {'sourceIPAddress': '98.191.174.30'}, 'responseElements': {'x-amz-request-id': 'BG7F524BNPWVKJCN', 'x-amz-id-2': 'DpyCtmgSiOwCUSNZlmRS2gwvALbM/aZJ5BQBIGhq/KsL4c/kSavhmau7hv57xOxrYn2yGzetHVRc+8kX+Y4rYDcq61T+7UFL'}, 's3': {'s3SchemaVersion': '1.0', 'configurationId': '6055bd1e-bd36-481d-9c7d-a23875a1eb34', 'bucket': {'name': 'test-lambdatrig', 'ownerIdentity': {'principalId': 'A2O3XJ6IOHI26F'}, 'arn': 'arn:aws:s3:::test-lambdatrig'}, 'object': {'key': 'test_1.mp4', 'size': 3610877, 'eTag': 'd1a9323ab22f0b4ee4876652b00ab425', 'sequencer': '00635B8EA807521EE7'}}}]}
 
 s3_client = boto3.client('s3',
                          aws_access_key_id=AWS_ACCESS_KEY_ID,
