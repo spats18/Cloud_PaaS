@@ -38,12 +38,8 @@ def download_video_s3(video_name):
 
 
 def get_item(name,video_name):
-	# response = dynamodb_client.query(TableName=dynamodb_table, 
-    # KeyConditionExpression=Key('name').eq(name))
-	# print(response)
-	response = dynamodb_client.scan(TableName=dynamodb_table,
-    IndexName='name-index')
-	# result = response
+
+	response = dynamodb_client.scan(TableName=dynamodb_table,IndexName='name-index')
 	#print(response)
 	value_list=[]
 	for item in response['Items']:
@@ -53,17 +49,17 @@ def get_item(name,video_name):
 				print(i)
 				if 'S' in i:
 					value_list.append(i['S'])
-	print("Value List:", value_list)
-	filename=video_name.split(".")[0]+".csv"
-	print("File name:", filename, video_name)
+	output_csv=video_name.split(".")[0]+".csv"
+	print("File name:", output_csv, video_name)
 	
-	with open('/tmp/'+filename, 'w', newline='') as myfile:
+	with open('/tmp/'+output_csv, 'w', newline='') as myfile:
 		wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
 		wr.writerow(value_list)
 	
-	response=s3_client.upload_file('/tmp/'+filename, output_bucket, filename)
+	response=s3_client.upload_file('/tmp/'+output_csv, output_bucket, output_csv)
 	print("upload response: ", response)
 
+def frames_deletion():
 	# clear frames
 	for filename in os.listdir(frames_path):
 		file_path = os.path.join(frames_path, filename)
@@ -80,29 +76,23 @@ def face_recognition_handler(event, context):
 	print("Hello")
 	data = open_encoding('encoding')
 	known_names = data['name']
-	known_face_encodings = data['encoding']
+	given_encoding = data['encoding']
 	print("in between encoding and download s3")
-	#downloading video from s3
+
 	video_name=event['Records'][0]['s3']['object']['key']
 	download_video_s3(video_name)
-	print("after download video")
-	#variable to store result
-	name = ""
+	face_recognition_result = ""
 
-	# for all images in frames directory
-	# find name of faces 
-	#once you find 1 face, return name
 	for filename in os.listdir(frames_path):
 		if filename.endswith(".jpeg"):
-			print("in for loop")
 			unknown_image = face_recognition.load_image_file(frames_path+filename)
-			unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
-			results = face_recognition.compare_faces(known_face_encodings, unknown_encoding)
+			new_encoding = face_recognition.face_encodings(unknown_image)[0]
+			results = face_recognition.compare_faces(given_encoding, new_encoding)
 			if True in results:
 				first_match_index = results.index(True)
-				name = known_names[first_match_index]
+				face_recognition_result = known_names[first_match_index]
 				break
 
-	print("Result of face recognition:", name)
-	get_item(name,video_name)
-
+	print("Result of face recognition:", face_recognition_result)
+	get_item(face_recognition_result,video_name)
+	frames_deletion()
