@@ -30,7 +30,7 @@ def open_encoding(filename):
 	return data
 
 def download_video_s3(video_name):
-	print("Downloading video")
+	print("Downloading video from S3")
 	s3_client.download_file(Bucket=input_bucket, Key=video_name, Filename='/tmp/'+video_name)
 	print("Extracting frames from video")
 	os.system("ffmpeg -i " + str('/tmp/'+video_name) + " -r 1 " + str(frames_path) + "image-%3d.jpeg")
@@ -38,29 +38,31 @@ def download_video_s3(video_name):
 
 
 def get_item(name,video_name):
-
+	print('Fetching item from DynamoDB')
 	response = dynamodb_client.scan(TableName=dynamodb_table,IndexName='name-index')
-	#print(response)
+	# print(response)
 	value_list=[]
 	for item in response['Items']:
 		if item['name']['S']==name:
-			print(item)
+			# print(item)
 			for i in item.values():
-				print(i)
+				# print(i)
 				if 'S' in i:
 					value_list.append(i['S'])
 	output_csv=video_name.split(".")[0]+".csv"
-	print("File name:", output_csv, video_name)
-	
+
+	print('Writing to the CSV file')	
 	with open('/tmp/'+output_csv, 'w', newline='') as myfile:
 		wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
 		wr.writerow(value_list)
 	
+	print('Uploading to CSV')
 	response=s3_client.upload_file('/tmp/'+output_csv, output_bucket, output_csv)
-	print("upload response: ", response)
+
 
 def frames_deletion():
 	# clear frames
+	print('Frames deletion')
 	for filename in os.listdir(frames_path):
 		file_path = os.path.join(frames_path, filename)
 		try:
@@ -73,11 +75,10 @@ def frames_deletion():
 
 
 def face_recognition_handler(event, context):	
-	print("Hello")
+	# print("Hello")
 	data = open_encoding('encoding')
 	known_names = data['name']
 	given_encoding = data['encoding']
-	print("in between encoding and download s3")
 
 	video_name=event['Records'][0]['s3']['object']['key']
 	download_video_s3(video_name)
@@ -93,6 +94,6 @@ def face_recognition_handler(event, context):
 				face_recognition_result = known_names[first_match_index]
 				break
 
-	print("Result of face recognition:", face_recognition_result)
+	print("Face Recognition result ", face_recognition_result)
 	get_item(face_recognition_result,video_name)
 	frames_deletion()
