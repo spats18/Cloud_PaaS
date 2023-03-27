@@ -29,7 +29,7 @@ def open_encoding(filename):
 	file.close()
 	return data
 
-def download_video_s3(video_name):
+def input_video_download(video_name):
 	print("Downloading video from S3")
 	s3_client.download_file(Bucket=input_bucket, Key=video_name, Filename='/tmp/'+video_name)
 	print("Extracting frames from video")
@@ -37,7 +37,7 @@ def download_video_s3(video_name):
 	print("Frames extracted")
 
 
-def get_item(name,video_name):
+def fetch_db_item(name,video_name):	
 	print('Fetching item from DynamoDB')
 	response = dynamodb_client.scan(TableName=dynamodb_table,IndexName='name-index')
 	# print(response)
@@ -50,6 +50,7 @@ def get_item(name,video_name):
 				if 'S' in i:
 					value_list.append(i['S'])
 	output_csv=video_name.split(".")[0]+".csv"
+	value_list = value_list[::-1]
 
 	print('Writing to the CSV file')	
 	with open('/tmp/'+output_csv, 'w', newline='') as myfile:
@@ -81,7 +82,7 @@ def face_recognition_handler(event, context):
 	given_encoding = data['encoding']
 
 	video_name=event['Records'][0]['s3']['object']['key']
-	download_video_s3(video_name)
+	input_video_download(video_name)
 	face_recognition_result = ""
 
 	for filename in os.listdir(frames_path):
@@ -95,5 +96,5 @@ def face_recognition_handler(event, context):
 				break
 
 	print("Face Recognition result ", face_recognition_result)
-	get_item(face_recognition_result,video_name)
+	fetch_db_item(face_recognition_result,video_name)
 	frames_deletion()
