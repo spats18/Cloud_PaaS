@@ -32,8 +32,7 @@
 - DynamoDB table - cse546-ddb
 - AccountID - 025635606453
 - Lambda function - cse546-lambda-pj2
-- AccessKeyID - AKIAQL6AAJ62SU3E4WMV
-- SecretAccessKey - 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
-
+- AccessKeyID -<>
+- SecretAccessKey - <>
 
 
