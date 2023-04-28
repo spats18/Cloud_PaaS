@@ -61,20 +61,6 @@ def fetch_db_item(name,video_name):
 	response=s3_client.upload_file('/tmp/'+output_csv, output_bucket, output_csv)
 
 
-def frames_deletion():
-	# clear frames
-	print('Frames deletion')
-	for filename in os.listdir(frames_path):
-		file_path = os.path.join(frames_path, filename)
-		try:
-			if os.path.isfile(file_path) or os.path.islink(file_path):
-				os.unlink(file_path)
-			elif os.path.isdir(file_path):
-				shutil.rmtree(file_path)
-		except Exception as e:
-			print('Failed to delete %s. Reason: %s' % (file_path, e))
-
-
 def face_recognition_handler(event, context):	
 	# print("Hello")
 	data = open_encoding('encoding')
@@ -97,4 +83,3 @@ def face_recognition_handler(event, context):
 
 	print("Face Recognition result ", face_recognition_result)
 	fetch_db_item(face_recognition_result,video_name)
-	frames_deletion()
