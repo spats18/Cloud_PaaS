@@ -49,7 +49,6 @@ def upload_files(test_case):
 			print("Uploading to input bucket..  name: " + str(filename)) 
 			upload_to_input_bucket_s3(test_dir, filename)
 			
-	
 def workload_generator():
 	
 	print("Running Test Case 1")
@@ -58,10 +57,6 @@ def workload_generator():
 	print("Running Test Case 2")
 	upload_files("test_case_2")
 	
-
 clear_input_bucket()
 clear_output_bucket()	
-workload_generator()	
-
-	
-
+workload_generator()
