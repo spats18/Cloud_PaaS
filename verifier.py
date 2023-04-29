@@ -1,15 +1,21 @@
 import boto3
 
+# AWS KEYS
+AWS_ACCESS_KEY_ID = 'AKIAQL6AAJ62SU3E4WMV'
+AWS_SECRET_ACCESS_KEY = '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'
+
 # Create an S3 client
 s3_client = boto3.client('s3', 
                          aws_access_key_id=AWS_ACCESS_KEY_ID,
-                         aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
+                         aws_secret_access_key= AWS_SECRET_ACCESS_KEY,
+                         region_name='us-east-1')
 # Name of the S3 bucket
 bucket_name = 'cse546-output'
 
 # Count the number of CSV files in the S3 bucket
 csv_count = 0
 response = s3_client.list_objects_v2(Bucket=bucket_name)
+print(response)
 for obj in response['Contents']:
     if obj['Key'].lower().endswith('.csv'):
         csv_count += 1
