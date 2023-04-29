@@ -60,7 +60,7 @@ def fetch_db_item(name,video_name):
 	print('Uploading to CSV')
 	response=s3_client.upload_file('/tmp/'+output_csv, output_bucket, output_csv)
 
-
+#main function for the Lambda function
 def face_recognition_handler(event, context):
 	data = open_encoding('encoding')
 	known_names = data['name']
