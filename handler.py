@@ -36,7 +36,7 @@ def input_video_download(video_name):
 	os.system("ffmpeg -i " + str('/tmp/'+video_name) + " -r 1 " + str(frames_path) + "image-%3d.jpeg")
 	print("Frames extracted")
 
-
+# Function to get results from DynamoDB
 def fetch_db_item(name,video_name):	
 	print('Fetching item from DynamoDB')
 	response = dynamodb_client.scan(TableName=dynamodb_table,IndexName='name-index')
