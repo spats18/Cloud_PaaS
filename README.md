@@ -1,4 +1,4 @@
-## CSE 546 CC Project 2
+## CSE 546 CC Project 2 - PaaS implementation using AWS Lambda
 
 #### Group Name - Turing3
 
