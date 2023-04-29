@@ -40,7 +40,6 @@ def input_video_download(video_name):
 def fetch_db_item(name,video_name):	
 	print('Fetching item from DynamoDB')
 	response = dynamodb_client.scan(TableName=dynamodb_table,IndexName='name-index')
-	# print(response)
 	value_list=[]
 	for item in response['Items']:
 		if item['name']['S']==name:
@@ -62,7 +61,6 @@ def fetch_db_item(name,video_name):
 
 
 def face_recognition_handler(event, context):	
-	# print("Hello")
 	data = open_encoding('encoding')
 	known_names = data['name']
 	given_encoding = data['encoding']
