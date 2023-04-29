@@ -1,6 +1,4 @@
 # test_cases
-test_copy
-monitor
 node_modules
 workload.py 
 verifier.py 
