@@ -12,8 +12,8 @@ output_bucket = "cse546-output"
 dynamodb_table = "cse546-ddb"
 frames_path = '/tmp/'
 
-AWS_ACCESS_KEY_ID = 'AKIAQL6AAJ62SU3E4WMV'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = <secret key>
+AWS_SECRET_ACCESS_KEY = <access key>
 
 s3_client = boto3.client('s3',
                          aws_access_key_id=AWS_ACCESS_KEY_ID,
