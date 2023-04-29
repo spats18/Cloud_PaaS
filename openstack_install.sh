@@ -23,12 +23,12 @@ openstack floating ip list
 openstack floating ip create public
 openstack server list
 openstack server add floating ip openstack 172.24.4.202
-ping -c 1 172.24.4.202
-telnet 172.24.4.202 22
+ping -c 1 <ip>
+telnet <ip> 22
 chmod 0600 unlock
-ssh -i unlock -v ubuntu@172.24.4.202
+ssh -i unlock -v ubuntu@<ip>
 cd devstack/
-ssh -i unlock -v ubuntu@172.24.4.202
+ssh -i unlock -v ubuntu@<ip>
 
 # Steps tp setup network DNS for Openstack VM 
 sudo nano /etc/netplan/50-cloud-init.yaml
@@ -38,7 +38,6 @@ sudo netplan apply
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod +x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
-conda init
 eval "$(/home/ubuntu/miniconda3/bin/conda shell.bash hook)"
 conda init
 source ~/.bashrc
