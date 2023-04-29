@@ -29,6 +29,7 @@ def open_encoding(filename):
 	file.close()
 	return data
 
+# Function to download videos
 def input_video_download(video_name):
 	print("Downloading video from S3")
 	s3_client.download_file(Bucket=input_bucket, Key=video_name, Filename='/tmp/'+video_name)
